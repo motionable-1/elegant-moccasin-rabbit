@@ -1,0 +1,32 @@
+{
+  "name": "remotion-template",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src && tsc --noEmit",
+    "lint:fix": "eslint src --fix && tsc --noEmit",
+    "fix": "prettier --write src && eslint src --fix && tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/google-fonts": "^4.0.414",
+    "@remotion/player": "^4.0.414",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "remotion": "^4.0.414"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.31.0",
+    "prettier": "3.6.0",
+    "typescript": "5.8.2",
+    "typescript-eslint": "^8.33.0",
+    "vite": "^6.0.7"
+  }
+}
