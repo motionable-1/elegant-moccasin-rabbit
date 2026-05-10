@@ -16,12 +16,13 @@ export type CompositionConfig = {
   scenes?: SceneMarker[];
 };
 
+// Single composition configuration. Add scenes here so the host app can render
+// external player controls and scene navigation around the iframe preview.
 export const composition: CompositionConfig = {
   id: "Main",
   component: Main,
-  durationInFrames: 180,
+  durationInFrames: 350,
   fps: 30,
   width: 1920,
   height: 1080,
-  scenes: [{ label: "Smoke Test", from: 0, durationInFrames: 180 }],
 };

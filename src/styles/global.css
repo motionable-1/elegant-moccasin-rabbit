@@ -50,7 +50,7 @@ select {
   justify-content: center;
   padding: 16px;
   overflow: hidden;
-  background: #1e1e1e;
+  background: #101114;
 }
 
 .app-backdrop {
@@ -58,13 +58,8 @@ select {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(
-      circle at 20% 15%,
-      rgb(255 255 255 / 0.08),
-      transparent 40%
-    ),
-    radial-gradient(circle at 80% 70%, rgb(59 130 246 / 0.08), transparent 45%),
-    linear-gradient(180deg, rgb(255 255 255 / 0.04), transparent 35%);
+    radial-gradient(circle at 50% 48%, rgb(19 222 255 / 0.08), transparent 38%),
+    linear-gradient(180deg, #05070d, #0b0f18 52%, #05070d);
 }
 
 .app-stage,
@@ -84,13 +79,12 @@ select {
 .app-player-shell {
   flex: 0 1 auto;
   overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 0.15);
+  border: 1px solid rgb(255 255 255 / 0.13);
   border-radius: 8px;
-  background: rgb(0 0 0 / 0.3);
+  background: rgb(0 0 0 / 0.35);
   box-shadow:
     0 20px 80px rgb(0 0 0 / 0.55),
-    inset 0 0 0 1px rgb(255 255 255 / 0.1);
-  backdrop-filter: blur(12px);
+    inset 0 0 0 1px rgb(255 255 255 / 0.08);
 }
 
 .app-player-gloss {
@@ -99,124 +93,199 @@ select {
   height: 40px;
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.1), transparent);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.08), transparent);
 }
 
-.preview-pending-scene {
+.smoke-scene {
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  color: #f6f1e8;
+  color: #f8fbff;
   background:
-    linear-gradient(180deg, rgb(255 255 255 / 0.04), transparent 38%),
-    radial-gradient(ellipse at 50% 52%, rgb(255 255 255 / 0.07), transparent 48%),
-    #0b0b0d;
+    radial-gradient(circle at 50% 47%, rgb(0 185 255 / 0.14), transparent 28%),
+    radial-gradient(circle at 50% 50%, #07213c 0%, #020b18 48%, #00050d 100%);
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
 }
 
-.preview-pending-scene::before {
+.smoke-glow {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  content: "";
-  background:
-    linear-gradient(90deg, rgb(255 255 255 / 0.03), transparent 34%),
-    linear-gradient(180deg, transparent 58%, rgb(0 0 0 / 0.34));
+  width: 980px;
+  height: 560px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgb(0 208 255 / 0.18), transparent 68%);
+  filter: blur(42px);
+  opacity: 0.44;
+  transform: translate3d(0, -18px, 0);
 }
 
-.preview-pending-grid {
+.smoke-grid {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.28;
+  inset: -2px;
+  opacity: 0.38;
   background-image:
-    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(71 205 255 / 0.11) 1px, transparent 1px),
+    linear-gradient(180deg, rgb(71 205 255 / 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.04) 1px, transparent 1px),
     linear-gradient(180deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse at center, black 0%, transparent 72%);
+  background-size: 112px 112px, 112px 112px, 28px 28px, 28px 28px;
+  mask-image: radial-gradient(ellipse at center, black 0%, transparent 78%);
 }
 
-.preview-pending-content {
+.smoke-noise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.24;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgb(255 255 255 / 0.05) 0 1px, transparent 1px),
+    radial-gradient(circle at 75% 55%, rgb(0 210 255 / 0.05) 0 1px, transparent 1px);
+  background-position: 0 0, 13px 19px;
+  background-size: 36px 36px, 44px 44px;
+  mix-blend-mode: screen;
+}
+
+.smoke-plus {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  opacity: 0.24;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.smoke-plus::before,
+.smoke-plus::after {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 18px;
+  height: 2px;
+  content: "";
+  background: rgb(58 218 255 / 0.58);
+  box-shadow: 0 0 18px rgb(0 220 255 / 0.32);
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.smoke-plus::after {
+  transform: translate3d(-50%, -50%, 0) rotate(90deg);
+}
+
+.smoke-content {
   position: relative;
-  width: min(520px, 72%);
+  z-index: 2;
   display: flex;
+  width: min(1040px, 78%);
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   transform: translate3d(0, 0, 0);
   will-change: transform, opacity;
 }
 
-.preview-pending-status {
-  display: inline-flex;
+.smoke-title {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  color: rgb(246 241 232 / 0.64);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-transform: uppercase;
+  gap: 12px;
+  text-wrap: balance;
+  filter: drop-shadow(0 18px 44px rgb(0 0 0 / 0.42));
 }
 
-.preview-pending-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: #d6a15c;
-  box-shadow: 0 0 24px rgb(214 161 92 / 0.7);
-}
-
-.preview-pending-title {
-  max-width: 520px;
-  margin-top: 20px;
-  font-size: 54px;
-  font-weight: 760;
-  letter-spacing: 0;
-  line-height: 0.98;
-}
-
-.preview-pending-subtitle {
-  max-width: 430px;
-  margin-top: 14px;
-  color: rgb(246 241 232 / 0.58);
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.35;
-}
-
-.preview-pending-progress {
-  width: min(360px, 100%);
-  height: 2px;
-  margin-top: 32px;
+.smoke-line-mask {
+  display: block;
   overflow: hidden;
-  background: rgb(246 241 232 / 0.12);
+  padding: 8px 14px;
+  margin: -8px -14px;
 }
 
-.preview-pending-progress span {
+.smoke-line-mask-accent {
+  padding-bottom: 12px;
+  margin-bottom: -12px;
+}
+
+.smoke-title-line {
+  display: block;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.smoke-title-main {
+  color: #f7fbff;
+  font-size: 108px;
+  font-weight: 780;
+  letter-spacing: 0;
+  line-height: 0.9;
+}
+
+.smoke-title-accent {
+  color: #22d9ff;
+  font-size: 90px;
+  font-weight: 740;
+  letter-spacing: 0;
+  line-height: 0.96;
+  text-shadow:
+    0 0 30px rgb(0 217 255 / 0.5),
+    0 0 70px rgb(0 217 255 / 0.24);
+}
+
+.smoke-progress {
+  position: relative;
+  width: 920px;
+  height: 22px;
+  margin-top: 66px;
+  overflow: hidden;
+  border: 1px solid rgb(98 225 255 / 0.42);
+  border-radius: 999px;
+  background: rgb(0 14 31 / 0.78);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.05),
+    0 0 34px rgb(0 220 255 / 0.12),
+    inset 0 0 22px rgb(0 0 0 / 0.62);
+}
+
+.smoke-progress-fill {
   display: block;
   width: 100%;
   height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #12bde6, #50eaff 72%, #c8fbff);
+  box-shadow:
+    0 0 26px rgb(0 222 255 / 0.78),
+    inset 0 0 16px rgb(255 255 255 / 0.34);
+  transform: scaleX(0);
   transform-origin: left center;
-  background: linear-gradient(90deg, #9c7441, #f1d4a8);
+  will-change: transform;
+}
+
+.smoke-progress-sheen {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 160px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.42),
+    transparent
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.smoke-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: #00050d;
+  will-change: opacity;
 }
 
 @media (max-width: 720px) {
   .app-shell {
     padding: 10px;
-  }
-
-  .preview-pending-content {
-    width: min(420px, 80%);
-  }
-
-  .preview-pending-title {
-    font-size: 36px;
-  }
-
-  .preview-pending-subtitle {
-    font-size: 16px;
   }
 }

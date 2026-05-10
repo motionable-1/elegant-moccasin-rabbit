@@ -47,13 +47,16 @@ const clampFrame = (frame: number) =>
 export const App = () => {
   const playerRef = useRef<PlayerRef>(null);
   const initialFrameRef = useRef(getFrameFromHash());
+  const [requestedFrame, setRequestedFrame] = useState<number | null>(
+    initialFrameRef.current,
+  );
   const [playerSize, setPlayerSize] = useState<CSSProperties>({
     width: "100%",
     height: "100%",
   });
 
   const initialFrame = initialFrameRef.current;
-  const shouldAutoPlay = initialFrame === null;
+  const shouldAutoPlay = requestedFrame === null;
 
   const calculatePlayerSize = () => {
     if (typeof window === "undefined") return { width: "100%", height: "100%" };
@@ -86,16 +89,24 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    if (initialFrame !== null && playerRef.current) {
-      playerRef.current.seekTo(clampFrame(initialFrame));
+    const updateRequestedFrame = () => setRequestedFrame(getFrameFromHash());
+    window.addEventListener("hashchange", updateRequestedFrame);
+    updateRequestedFrame();
+    return () => window.removeEventListener("hashchange", updateRequestedFrame);
+  }, []);
+
+  useEffect(() => {
+    if (requestedFrame !== null && playerRef.current) {
+      playerRef.current.pause();
+      playerRef.current.seekTo(clampFrame(requestedFrame));
     }
-  }, [initialFrame]);
+  }, [requestedFrame]);
 
   const getPlayerState = useCallback(() => {
     const player = playerRef.current;
     const currentFrame = player
       ? clampFrame(player.getCurrentFrame())
-      : clampFrame(initialFrame ?? 0);
+      : clampFrame(requestedFrame ?? 0);
 
     return {
       compositionId: composition.id,
@@ -108,7 +119,7 @@ export const App = () => {
       isMuted: player?.isMuted() ?? false,
       scenes: composition.scenes ?? [],
     };
-  }, [initialFrame, shouldAutoPlay]);
+  }, [requestedFrame, shouldAutoPlay]);
 
   const postPlayerState = useCallback(
     (type: typeof PLAYER_READY_TYPE | typeof PLAYER_STATE_TYPE) => {
